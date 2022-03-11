@@ -8,10 +8,10 @@ public class Convertible extends Carro{
         super();
     }
 
-    public Convertible(String nombre, int numero, Color color) {
-        super(nombre, numero, color);
+    public Convertible(String nombre, int numero, Color color, String tipo) {
+        super(nombre, numero, color, tipo);
     }
-
+    
     public Convertible(String nombre, int numero, Color color, int distancia) {
         super(nombre, numero, color, distancia);
     }

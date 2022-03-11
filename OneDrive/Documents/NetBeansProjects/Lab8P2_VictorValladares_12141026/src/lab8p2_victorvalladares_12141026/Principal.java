@@ -7,6 +7,7 @@ package lab8p2_victorvalladares_12141026;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
 
@@ -22,6 +23,16 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         crearTabla();
+        cargarArchivo();
+    }
+    private void cargarArchivo(){
+        AdminCarros ac = new AdminCarros ("./carros.cbm");
+        ac.cargarArchivo();
+        lista = ac.getListaCarros();
+        DefaultComboBoxModel modelo
+                    = new DefaultComboBoxModel(
+                            ac.getListaCarros().toArray());
+        cb_corredores.setModel(modelo);
     }
     
     private void crearTabla(){
@@ -265,31 +276,33 @@ public class Principal extends javax.swing.JFrame {
         distancia = Integer.parseInt(tf_distancia.getText());
         label_nombre.setText(nombre);
         label_distancia.setText("" + distancia);
+        tf_pista.setText("");
+        tf_distancia.setText("");
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void bt_guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_guardarMouseClicked
         try{
             String nombre_carro = tf_nombre.getText();
             int num = Integer.parseInt(tf_numero.getText());
+            String tipo;
             if (cb_tipo.getSelectedIndex() == 0){
-                McQueen m = new McQueen (nombre_carro, num, color);
-                AdminCarros ac = new AdminCarros ("./carros.cbm");
-                ac.cargarArchivo();
-                ac.setCarro(m);
-                ac.escribirArchivo();
+                tipo = "McQueen";
             }else if (cb_tipo.getSelectedIndex() == 1){
-                Convertible c = new Convertible (nombre_carro, num, color);
-                AdminCarros ac = new AdminCarros ("./carros.cbm");
-                ac.cargarArchivo();
-                ac.setCarro(c);
-                ac.escribirArchivo();
+                tipo = "Convertible";
             }else {
-                Nascar n = new Nascar (nombre_carro, num, color);
-                AdminCarros ac = new AdminCarros ("./carros.cbm");
-                ac.cargarArchivo();
-                ac.setCarro(n);
-                ac.escribirArchivo();
+                tipo = "Nascar";
             }
+            Carro c = new Carro (nombre_carro, num, color, tipo);
+            
+            AdminCarros ac = new AdminCarros ("./carros.cbm");
+            ac.cargarArchivo();
+            ac.setCarro(c);
+            DefaultComboBoxModel modelo
+                    = new DefaultComboBoxModel(
+                            ac.getListaCarros().toArray());
+            cb_corredores.setModel(modelo);
+            ac.escribirArchivo();
+            
             JOptionPane.showMessageDialog(null, "Se ha creado el corredor");
             tf_nombre.setText("");
             tf_numero.setText("");

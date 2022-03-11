@@ -8,8 +8,8 @@ public class McQueen extends Carro{
         super();
     }
 
-    public McQueen(String nombre, int numero, Color color) {
-        super(nombre, numero, color);
+    public McQueen(String nombre, int numero, Color color, String tipo) {
+        super(nombre, numero, color, tipo);
     }
 
     public McQueen(String nombre, int numero, Color color, int distancia) {

@@ -1,22 +1,28 @@
 package lab8p2_victorvalladares_12141026;
 
 import java.awt.Color;
+import java.io.Serializable;
 
-public class Carro {
+public class Carro implements Serializable{
     private String nombre;
     private int numero;
     private Color color;
     private int distancia;
+    private String tipo;
 
+    private static final long SerialVersionUID=777L;
+    
     public Carro() {
     }
 
-    public Carro(String nombre, int numero, Color color) {
+    public Carro(String nombre, int numero, Color color, String tipo) {
         this.nombre = nombre;
         this.numero = numero;
         this.color = color;
+        this.tipo = tipo;
     }
 
+    
     public Carro(String nombre, int numero, Color color, int distancia) {
         this.nombre = nombre;
         this.numero = numero;
@@ -54,6 +60,14 @@ public class Carro {
 
     public void setDistancia(int distancia) {
         this.distancia = distancia;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     @Override
