@@ -116,6 +116,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         bt_pausar.setText("Pausar");
+        bt_pausar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_pausarMouseClicked(evt);
+            }
+        });
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -167,6 +172,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         jButton3.setText("Reiniciar");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
 
         jLabel6.setText("Distancia");
 
@@ -353,8 +363,30 @@ public class Principal extends javax.swing.JFrame {
             pos = tabla.getSelectedRow();
         }
         Carro carro = lista.get(pos);
+        pg = new hiloProgressBar(progress_bar, carro);
+        Thread proceso1 = new Thread (pg);
+        proceso1.start();
         
+        tb = new hiloTabla(lista, tabla);
+        Thread proceso2 = new Thread (tb);
+        proceso2.start();
     }//GEN-LAST:event_bt_comenzarMouseClicked
+
+    private void bt_pausarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_pausarMouseClicked
+        pg.setAvanzar(false);
+        tb.setAvanzar(false);
+    }//GEN-LAST:event_bt_pausarMouseClicked
+
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        progress_bar.setValue(0);
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.setRowCount(0);
+        tabla.setModel(modelo);
+        label_nombre.setText("");
+        nombre = "";
+        label_distancia.setText("");
+        distancia = 0;
+    }//GEN-LAST:event_jButton3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -422,6 +454,7 @@ public class Principal extends javax.swing.JFrame {
     ArrayList <Carro> lista = new ArrayList();
     Color color;
     
-    
+    hiloProgressBar pg;
+    hiloTabla tb;
 }
 
