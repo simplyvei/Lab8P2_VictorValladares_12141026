@@ -345,6 +345,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         Carro carro = (Carro) cb_corredores.getSelectedItem();
+        listaTabla.add(carro);
         Object[] newrow = {
             carro.getNumero(),
             carro.getNombre(),
@@ -363,11 +364,13 @@ public class Principal extends javax.swing.JFrame {
             pos = tabla.getSelectedRow();
         }
         Carro carro = lista.get(pos);
+        
+        //System.out.println(tabla.getRowCount());
         pg = new hiloProgressBar(progress_bar, carro);
         Thread proceso1 = new Thread (pg);
         proceso1.start();
         
-        tb = new hiloTabla(lista, tabla);
+        tb = new hiloTabla(listaTabla, tabla, distancia);
         Thread proceso2 = new Thread (tb);
         proceso2.start();
     }//GEN-LAST:event_bt_comenzarMouseClicked
@@ -382,10 +385,11 @@ public class Principal extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         modelo.setRowCount(0);
         tabla.setModel(modelo);
-        label_nombre.setText("");
+        label_nombre.setText("___");
         nombre = "";
-        label_distancia.setText("");
+        label_distancia.setText("___");
         distancia = 0;
+        listaTabla.clear();
     }//GEN-LAST:event_jButton3MouseClicked
 
     /**
@@ -452,6 +456,7 @@ public class Principal extends javax.swing.JFrame {
     String nombre = "";
     int distancia;
     ArrayList <Carro> lista = new ArrayList();
+    ArrayList <Carro> listaTabla = new ArrayList();
     Color color;
     
     hiloProgressBar pg;

@@ -12,10 +12,12 @@ public class hiloTabla extends Thread{
     
     private ArrayList <Carro> listaCarros = new ArrayList();
     private JTable tabla;
+    private int distancia;
     private boolean avanzar;
     private boolean vive;
 
-    public hiloTabla(ArrayList <Carro> listaCarros, JTable tabla) {
+    public hiloTabla(ArrayList <Carro> listaCarros, JTable tabla, int distancia) {
+        this.distancia = distancia;
         this.tabla = tabla;
         this.listaCarros = listaCarros;
         avanzar = true;
@@ -33,16 +35,19 @@ public class hiloTabla extends Thread{
     @Override
     public void run() {
         while (vive) {
+                
+                
             if (avanzar) {
-                int r1 = r.nextInt(190)+30;
-                int r2 = r.nextInt(200)+20;
-                int r3 = r.nextInt(180)+40;
+                
                 for (Carro c : listaCarros){
                     if (c.getTipo().equalsIgnoreCase("McQueen")){
+                        int r1 = r.nextInt(190)+30;
                         c.setDistancia(c.getDistancia() + r1);
                     }else if (c.getTipo().equalsIgnoreCase("Convertible")){
+                        int r2 = r.nextInt(200)+20;
                         c.setDistancia(c.getDistancia() + r2);
                     }else if (c.getTipo().equalsIgnoreCase("Nascar")){
+                        int r3 = r.nextInt(180)+40;
                         c.setDistancia(c.getDistancia() + r3);
                     }
                 }
@@ -53,18 +58,20 @@ public class hiloTabla extends Thread{
                         return new Integer(e2.getDistancia()).compareTo(new Integer(e1.getDistancia())); 
                      }
                 });
-                
+                DefaultTableModel modelo
+                                = (DefaultTableModel) tabla.getModel();
+                modelo.setRowCount(0);
+                tabla.setModel(modelo);
                 for (Carro carros : listaCarros){
                     Object[] newrow = {
                         carros.getNumero(),
                         carros.getNombre(),
                         carros.getDistancia()
                     };  
-                    DefaultTableModel modelo
-                                = (DefaultTableModel) tabla.getModel();
                     modelo.addRow(newrow);
                     tabla.setModel(modelo);
                 }
+                
             }
             try {
                 Thread.sleep(1000);
