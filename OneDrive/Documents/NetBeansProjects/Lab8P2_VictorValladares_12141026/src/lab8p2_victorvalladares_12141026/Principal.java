@@ -109,6 +109,11 @@ public class Principal extends javax.swing.JFrame {
         label_distancia.setText("___");
 
         bt_comenzar.setText("Comenzar");
+        bt_comenzar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_comenzarMouseClicked(evt);
+            }
+        });
 
         bt_pausar.setText("Pausar");
 
@@ -340,6 +345,16 @@ public class Principal extends javax.swing.JFrame {
         modelo.addRow(newrow);
         tabla.setModel(modelo);
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void bt_comenzarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_comenzarMouseClicked
+        int pos = 0;
+        progress_bar.setMaximum(distancia);
+        if (tabla.getSelectedRow() > 0){
+            pos = tabla.getSelectedRow();
+        }
+        Carro carro = lista.get(pos);
+        
+    }//GEN-LAST:event_bt_comenzarMouseClicked
 
     /**
      * @param args the command line arguments
