@@ -287,9 +287,9 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bt_colorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_colorMouseClicked
-        color = JColorChooser.showDialog(
+        bt_color.setBackground(JColorChooser.showDialog(
                         this, "Seleccione un color", 
-                        Color.yellow);
+                        Color.yellow));
     }//GEN-LAST:event_bt_colorMouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
@@ -305,6 +305,7 @@ public class Principal extends javax.swing.JFrame {
         try{
             String nombre_carro = tf_nombre.getText();
             int num = Integer.parseInt(tf_numero.getText());
+            color = bt_color.getBackground();
             boolean val = true;
             for (Carro c : lista){
                 if (num == c.getNumero()){
@@ -345,28 +346,32 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         Carro carro = (Carro) cb_corredores.getSelectedItem();
-        listaTabla.add(carro);
-        Object[] newrow = {
-            carro.getNumero(),
-            carro.getNombre(),
-            carro.getDistancia()
-        };  
-        DefaultTableModel modelo
-                    = (DefaultTableModel) tabla.getModel();
-        modelo.addRow(newrow);
-        tabla.setModel(modelo);
+        boolean val = true;
+        for (Carro c : listaTabla){
+            if (carro.getNumero() == c.getNumero()){
+                JOptionPane.showMessageDialog(null, "Este corredor ya esta en la tabla");
+                val = false;
+            }
+        }
+        if (val == true){
+            listaTabla.add(carro);
+
+            Object[] newrow = {
+                carro.getNumero(),
+                carro.getNombre(),
+                carro.getDistancia()
+            };  
+            DefaultTableModel modelo
+                        = (DefaultTableModel) tabla.getModel();
+            modelo.addRow(newrow);
+            tabla.setModel(modelo);
+        }
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void bt_comenzarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_comenzarMouseClicked
-        int pos = 0;
-        progress_bar.setMaximum(distancia);
-        if (tabla.getSelectedRow() > 0){
-            pos = tabla.getSelectedRow();
-        }
-        Carro carro = lista.get(pos);
-        
+
         //System.out.println(tabla.getRowCount());
-        pg = new hiloProgressBar(progress_bar, carro);
+        pg = new hiloProgressBar(progress_bar, tabla, listaTabla, distancia);
         Thread proceso1 = new Thread (pg);
         proceso1.start();
         
@@ -389,6 +394,9 @@ public class Principal extends javax.swing.JFrame {
         nombre = "";
         label_distancia.setText("___");
         distancia = 0;
+        for (Carro c : listaTabla){
+            c.setDistancia(0);
+        }
         listaTabla.clear();
     }//GEN-LAST:event_jButton3MouseClicked
 

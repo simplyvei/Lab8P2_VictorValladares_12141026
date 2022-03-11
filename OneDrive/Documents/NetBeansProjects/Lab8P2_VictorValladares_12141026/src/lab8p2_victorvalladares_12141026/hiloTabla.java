@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -72,6 +73,13 @@ public class hiloTabla extends Thread{
                     tabla.setModel(modelo);
                 }
                 
+                for (Carro c : listaCarros){
+                    if (c.getDistancia() >= distancia){
+                        vive = false;
+                        JOptionPane.showMessageDialog(null, "Ha ganado " + c.getNombre());
+                        break;
+                    }
+                }
             }
             try {
                 Thread.sleep(1000);
