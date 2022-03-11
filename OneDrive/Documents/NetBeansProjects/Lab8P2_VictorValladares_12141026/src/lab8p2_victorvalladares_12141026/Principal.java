@@ -8,6 +8,7 @@ package lab8p2_victorvalladares_12141026;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,6 +21,31 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
+        crearTabla();
+    }
+    
+    private void crearTabla(){
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "Numero", "Nombre", "Distancia"
+                }
+        ) {
+            Class[] types = new Class[]{
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        });
     }
 
     /**
@@ -39,7 +65,7 @@ public class Principal extends javax.swing.JFrame {
         bt_pausar = new javax.swing.JButton();
         progress_bar = new javax.swing.JProgressBar();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
         cb_corredores = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         tf_numero = new javax.swing.JTextField();
@@ -74,7 +100,7 @@ public class Principal extends javax.swing.JFrame {
 
         bt_pausar.setText("Pausar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -85,13 +111,15 @@ public class Principal extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabla);
 
         jButton1.setText("Agregar");
 
         jLabel3.setText("Numero identificador");
 
         jLabel4.setText("Nommbre del corredor");
+
+        cb_tipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "McQueen", "Convertible", "Nascar" }));
 
         bt_color.setText("Color");
         bt_color.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -101,6 +129,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         bt_guardar.setText("Guardar");
+        bt_guardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_guardarMouseClicked(evt);
+            }
+        });
 
         jLabel5.setText("Nombre de pista");
 
@@ -138,10 +171,10 @@ public class Principal extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(label_distancia)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(cb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(58, 58, 58)
+                                .addComponent(cb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                                 .addComponent(bt_color)
                                 .addGap(26, 26, 26)
                                 .addComponent(bt_guardar))
@@ -234,6 +267,38 @@ public class Principal extends javax.swing.JFrame {
         label_distancia.setText("" + distancia);
     }//GEN-LAST:event_jButton2MouseClicked
 
+    private void bt_guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_guardarMouseClicked
+        try{
+            String nombre_carro = tf_nombre.getText();
+            int num = Integer.parseInt(tf_numero.getText());
+            if (cb_tipo.getSelectedIndex() == 0){
+                McQueen m = new McQueen (nombre_carro, num, color);
+                AdminCarros ac = new AdminCarros ("./carros.cbm");
+                ac.cargarArchivo();
+                ac.setCarro(m);
+                ac.escribirArchivo();
+            }else if (cb_tipo.getSelectedIndex() == 1){
+                Convertible c = new Convertible (nombre_carro, num, color);
+                AdminCarros ac = new AdminCarros ("./carros.cbm");
+                ac.cargarArchivo();
+                ac.setCarro(c);
+                ac.escribirArchivo();
+            }else {
+                Nascar n = new Nascar (nombre_carro, num, color);
+                AdminCarros ac = new AdminCarros ("./carros.cbm");
+                ac.cargarArchivo();
+                ac.setCarro(n);
+                ac.escribirArchivo();
+            }
+            JOptionPane.showMessageDialog(null, "Se ha creado el corredor");
+            tf_nombre.setText("");
+            tf_numero.setText("");
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "No se ha podido crear el corredor");
+        }
+        
+    }//GEN-LAST:event_bt_guardarMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -286,10 +351,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel label_distancia;
     private javax.swing.JLabel label_nombre;
     private javax.swing.JProgressBar progress_bar;
+    private javax.swing.JTable tabla;
     private javax.swing.JTextField tf_distancia;
     private javax.swing.JTextField tf_nombre;
     private javax.swing.JTextField tf_numero;

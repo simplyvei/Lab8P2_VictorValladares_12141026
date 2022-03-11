@@ -8,6 +8,10 @@ public class Nascar extends Carro{
         super();
     }
 
+    public Nascar(String nombre, int numero, Color color) {
+        super(nombre, numero, color);
+    }
+
     public Nascar(String nombre, int numero, Color color, int distancia) {
         super(nombre, numero, color, distancia);
     }

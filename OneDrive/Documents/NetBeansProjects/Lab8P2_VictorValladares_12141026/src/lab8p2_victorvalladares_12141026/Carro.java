@@ -11,6 +11,12 @@ public class Carro {
     public Carro() {
     }
 
+    public Carro(String nombre, int numero, Color color) {
+        this.nombre = nombre;
+        this.numero = numero;
+        this.color = color;
+    }
+
     public Carro(String nombre, int numero, Color color, int distancia) {
         this.nombre = nombre;
         this.numero = numero;
