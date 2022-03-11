@@ -72,7 +72,7 @@ public class Carro implements Serializable{
 
     @Override
     public String toString() {
-        return nombre;
+        return "No. "+ numero+ " "+nombre;
     }
     
 }

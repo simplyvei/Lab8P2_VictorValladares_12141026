@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -125,6 +126,11 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tabla);
 
         jButton1.setText("Agregar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         jLabel3.setText("Numero identificador");
 
@@ -284,6 +290,12 @@ public class Principal extends javax.swing.JFrame {
         try{
             String nombre_carro = tf_nombre.getText();
             int num = Integer.parseInt(tf_numero.getText());
+            boolean val = true;
+            for (Carro c : lista){
+                if (num == c.getNumero()){
+                    val = false;
+                }
+            }
             String tipo;
             if (cb_tipo.getSelectedIndex() == 0){
                 tipo = "McQueen";
@@ -292,25 +304,42 @@ public class Principal extends javax.swing.JFrame {
             }else {
                 tipo = "Nascar";
             }
-            Carro c = new Carro (nombre_carro, num, color, tipo);
-            
-            AdminCarros ac = new AdminCarros ("./carros.cbm");
-            ac.cargarArchivo();
-            ac.setCarro(c);
-            DefaultComboBoxModel modelo
-                    = new DefaultComboBoxModel(
-                            ac.getListaCarros().toArray());
-            cb_corredores.setModel(modelo);
-            ac.escribirArchivo();
-            
-            JOptionPane.showMessageDialog(null, "Se ha creado el corredor");
-            tf_nombre.setText("");
-            tf_numero.setText("");
+            if (val == true){
+                Carro c = new Carro (nombre_carro, num, color, tipo);
+
+                AdminCarros ac = new AdminCarros ("./carros.cbm");
+                ac.cargarArchivo();
+                ac.setCarro(c);
+                DefaultComboBoxModel modelo
+                        = new DefaultComboBoxModel(
+                                ac.getListaCarros().toArray());
+                cb_corredores.setModel(modelo);
+                ac.escribirArchivo();
+
+                JOptionPane.showMessageDialog(null, "Se ha creado el corredor");
+                tf_nombre.setText("");
+                tf_numero.setText("");
+            }else{
+                JOptionPane.showMessageDialog(null, "Este numero ya existe");
+            }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "No se ha podido crear el corredor");
         }
         
     }//GEN-LAST:event_bt_guardarMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        Carro carro = (Carro) cb_corredores.getSelectedItem();
+        Object[] newrow = {
+            carro.getNumero(),
+            carro.getNombre(),
+            carro.getDistancia()
+        };  
+        DefaultTableModel modelo
+                    = (DefaultTableModel) tabla.getModel();
+        modelo.addRow(newrow);
+        tabla.setModel(modelo);
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments
