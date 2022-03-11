@@ -421,5 +421,7 @@ public class Principal extends javax.swing.JFrame {
     int distancia;
     ArrayList <Carro> lista = new ArrayList();
     Color color;
+    
+    
 }
 

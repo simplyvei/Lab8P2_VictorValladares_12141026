@@ -1,8 +1,11 @@
 package lab8p2_victorvalladares_12141026;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class hiloTabla extends Thread{
     Random r = new Random();
@@ -43,8 +46,25 @@ public class hiloTabla extends Thread{
                         c.setDistancia(c.getDistancia() + r3);
                     }
                 }
+        
+                Collections.sort(listaCarros, new Comparator<Carro>() {
+                     @Override
+                     public int compare(Carro e1, Carro e2) {
+                        return new Integer(e2.getDistancia()).compareTo(new Integer(e1.getDistancia())); 
+                     }
+                });
                 
-                
+                for (Carro carros : listaCarros){
+                    Object[] newrow = {
+                        carros.getNumero(),
+                        carros.getNombre(),
+                        carros.getDistancia()
+                    };  
+                    DefaultTableModel modelo
+                                = (DefaultTableModel) tabla.getModel();
+                    modelo.addRow(newrow);
+                    tabla.setModel(modelo);
+                }
             }
             try {
                 Thread.sleep(1000);
