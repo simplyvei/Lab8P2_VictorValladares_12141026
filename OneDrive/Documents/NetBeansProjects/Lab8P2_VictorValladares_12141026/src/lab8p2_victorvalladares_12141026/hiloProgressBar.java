@@ -46,7 +46,7 @@ public class hiloProgressBar extends Thread{
                 Carro carro = carros.get(pos);*/
                 Carro carro = (Carro) lista.getSelectedItem();
                 
-                //progressbar.setBackground(Color.red);
+                progressbar.setBackground(Color.red);
                 if (progressbar.getValue() == distancia){
                     vive = false;
                 }else{

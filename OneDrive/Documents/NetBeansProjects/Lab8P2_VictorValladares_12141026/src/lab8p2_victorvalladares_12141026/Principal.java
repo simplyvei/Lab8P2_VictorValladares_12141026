@@ -123,8 +123,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        progress_bar.setBackground(new java.awt.Color(0, 0, 255));
-
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
