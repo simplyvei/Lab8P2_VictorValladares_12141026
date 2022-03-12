@@ -93,6 +93,7 @@ public class Principal extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        cb_prueba = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,6 +122,8 @@ public class Principal extends javax.swing.JFrame {
                 bt_pausarMouseClicked(evt);
             }
         });
+
+        progress_bar.setBackground(new java.awt.Color(0, 0, 255));
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -186,23 +189,25 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
-                        .addComponent(progress_bar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(bt_comenzar)
-                            .addGap(30, 30, 30)
-                            .addComponent(bt_pausar)
-                            .addGap(58, 58, 58)
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(label_nombre)
-                            .addGap(66, 66, 66)
-                            .addComponent(jLabel2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(label_distancia)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 587, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(bt_comenzar)
+                        .addGap(30, 30, 30)
+                        .addComponent(bt_pausar)
+                        .addGap(58, 58, 58)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(label_nombre)
+                        .addGap(66, 66, 66)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(label_distancia))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(progress_bar, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cb_prueba, 0, 104, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(cb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -252,7 +257,9 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(bt_pausar)
                     .addComponent(bt_comenzar))
                 .addGap(18, 18, 18)
-                .addComponent(progress_bar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(progress_bar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cb_prueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
@@ -365,13 +372,19 @@ public class Principal extends javax.swing.JFrame {
                         = (DefaultTableModel) tabla.getModel();
             modelo.addRow(newrow);
             tabla.setModel(modelo);
+            
+            DefaultComboBoxModel dc=
+                    (DefaultComboBoxModel) cb_prueba.getModel();
+            dc.addElement(carro);
+            cb_prueba.setModel(dc);
         }
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void bt_comenzarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_comenzarMouseClicked
-
         //System.out.println(tabla.getRowCount());
-        pg = new hiloProgressBar(progress_bar, tabla, listaTabla, distancia);
+        
+        
+        pg = new hiloProgressBar(progress_bar, cb_prueba, listaTabla, distancia);
         Thread proceso1 = new Thread (pg);
         proceso1.start();
         
@@ -386,18 +399,26 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_pausarMouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-        progress_bar.setValue(0);
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        modelo.setRowCount(0);
-        tabla.setModel(modelo);
-        label_nombre.setText("___");
-        nombre = "";
-        label_distancia.setText("___");
-        distancia = 0;
-        for (Carro c : listaTabla){
-            c.setDistancia(0);
+        try{
+            progress_bar.setValue(0);
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+            modelo.setRowCount(0);
+            tabla.setModel(modelo);
+            label_nombre.setText("___");
+            nombre = "";
+            label_distancia.setText("___");
+            distancia = 0;
+            for (Carro c : listaTabla){
+                c.setDistancia(0);
+            }
+            listaTabla.clear();
+            DefaultComboBoxModel dc=
+                        (DefaultComboBoxModel) cb_prueba.getModel();
+            dc.removeAllElements();
+            cb_prueba.setModel(dc);
+        }catch(Exception e){
+            
         }
-        listaTabla.clear();
     }//GEN-LAST:event_jButton3MouseClicked
 
     /**
@@ -441,6 +462,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton bt_guardar;
     private javax.swing.JButton bt_pausar;
     private javax.swing.JComboBox<String> cb_corredores;
+    private javax.swing.JComboBox<String> cb_prueba;
     private javax.swing.JComboBox<String> cb_tipo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

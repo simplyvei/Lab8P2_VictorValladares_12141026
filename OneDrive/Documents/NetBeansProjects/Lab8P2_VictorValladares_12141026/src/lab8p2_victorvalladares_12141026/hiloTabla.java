@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -35,6 +36,7 @@ public class hiloTabla extends Thread{
 
     @Override
     public void run() {
+        
         while (vive) {
                 
                 
@@ -52,6 +54,8 @@ public class hiloTabla extends Thread{
                         c.setDistancia(c.getDistancia() + r3);
                     }
                 }
+                
+                
         
                 Collections.sort(listaCarros, new Comparator<Carro>() {
                      @Override
